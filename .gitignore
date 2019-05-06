@@ -1,0 +1,7 @@
+/vendor/
+/composer.lock
+.idea/
+var/cache/
+var/logs/
+.phpunit.result.cache
+.phpstorm.meta.php
