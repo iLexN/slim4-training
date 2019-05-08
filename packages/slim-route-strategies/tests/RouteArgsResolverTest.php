@@ -1,13 +1,12 @@
 <?php
 
-namespace Ilex\Tests\Slim\RouteStrategies;
+namespace Ilex\Slim\Tests\RouteStrategies;
 
-use Ilex\Slim\RouteStrategies\RouteArgsResolver;
 use PHPUnit\Framework\TestCase;
 
-class RouteArgsResolverTest extends TestCase
+final class RouteArgsResolverTest extends TestCase
 {
-    public function testCreateClass()
+    public function testCreateClass(): void
     {
         self::assertEquals(true, true);
     }

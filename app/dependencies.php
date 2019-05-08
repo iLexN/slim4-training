@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use App\EventListener\ControllerEventListener;
+use App\EventListener\ControllerEventListener1;
 use App\ValueObject\AddressFactory;
 use App\ValueObject\PersonFactory;
 use Ilex\Slim\RouteStrategies\RouteArgsResolver;
@@ -8,26 +10,29 @@ use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Cache\Simple\FilesystemCache;
+use Yii\EventDispatcher\Dispatcher;
+use Yii\EventDispatcher\Provider\Provider;
 
 return [
 
     AddressFactory::class => DI\autowire(),
     PersonFactory::class => DI\autowire(),
 
-    RequestResponseArgs::class => static function (
-        ContainerInterface $c
-    ) {
-        $routeResolver = new RouteArgsResolver();
-        $routeResolver
-            ->add($c->get(AddressFactory::class))
-            ->add($c->get(PersonFactory::class));
+    RouteArgsResolver::class => DI\autowire()
+        ->method('add', DI\get(AddressFactory::class))
+        ->method('add', DI\get(PersonFactory::class)),
+    RequestResponseArgs::class => DI\autowire(),
 
+    ListenerProviderInterface::class => DI\autowire(Provider::class)
+        ->method('attach', DI\get(ControllerEventListener1::class))
+        ->method('attach', DI\get(ControllerEventListener::class)),
 
-        return new RequestResponseArgs($routeResolver);
-    },
+    EventDispatcherInterface::class => DI\autowire(Dispatcher::class),
 
     LoggerInterface::class => static function (ContainerInterface $c) {
         $setting = $c->get('logger.settings');
@@ -38,6 +43,11 @@ return [
     },
 
     CacheInterface::class => static function (ContainerInterface $c) {
-        return new FilesystemCache('app', 30, __DIR__ . '/../var/cache');
+        $setting = $c->get('cache.file.settings');
+        return new FilesystemCache(
+            (string) $setting['name'],
+            $setting['lifetime'],
+            $setting['path']
+        );
     },
 ];

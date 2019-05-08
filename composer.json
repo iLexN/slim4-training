@@ -7,12 +7,18 @@
         "nyholm/psr7-server": "^0.3.0",
         "php-di/php-di": "^6.0",
         "slim/slim": "4.x-dev",
-        "symfony/cache": "^4.2"
+        "symfony/cache": "^4.2",
+        "yiisoft/event-dispatcher": "3.0.x-dev"
     },
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "Ilex\\Slim\\RouteStrategies\\": "packages/slim-route-strategies/src"
+            "Ilex\\Slim\\RouteStrategies\\": "packages/slim-route-strategies/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ilex\\Slim\\Tests\\RouteStrategies\\": "packages/slim-route-strategies/tests/"
         }
     },
     "config": {

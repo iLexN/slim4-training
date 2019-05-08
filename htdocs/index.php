@@ -5,9 +5,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\Controller\Address;
 use App\Controller\Name;
+use App\ValueObject\AddressFactory;
 use DI\ContainerBuilder;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
 use Psr\Container\ContainerInterface;
+use Psr\SimpleCache\CacheInterface;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Middleware\ErrorMiddleware;
@@ -34,8 +36,7 @@ $containerBuilder->addDefinitions(
     __DIR__ . '/../app/settings.php',
     __DIR__ . '/../app/dependencies.php'
 );
-//$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
-/** @var ContainerInterface $container */
+$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 $container = $containerBuilder->build();
 
 
@@ -44,7 +45,6 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 $urlResolver = $container->get(RequestResponseArgs::class);
-
 
 $routeCollector = $app->getRouteCollector();
 $routeCollector->setDefaultInvocationStrategy($urlResolver);
@@ -59,22 +59,6 @@ $app->get('/', function ($request, $response) {
     $response->getBody()->write("Home");
     return $response;
 });
-
-/**
- * The constructor of ErrorMiddleware takes in 5 parameters
- * @param CallableResolverInterface $callableResolver -> CallableResolver implementation of your choice
- * @param ResponseFactoryInterface $responseFactory -> ResponseFactory implementation of your choice
- * @param bool $displayErrorDetails -> Should be set to false in production
- * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
- * @param bool $logErrorDetails -> Display error details in error log
- * which can be replaced by a callable of your choice.
- * Note: This middleware should be added last. It will not handle any exceptions/errors
- * for middleware added after it.
- */
-$callableResolver = $app->getCallableResolver();
-$responseFactory = $app->getResponseFactory();
-$errorMiddleware = new ErrorMiddleware($callableResolver, $responseFactory, true, true, true);
-$app->add($errorMiddleware);
 
 //$routeResolver = $app->getRouteResolver();
 //$routingMiddleware = new RoutingMiddleware($routeResolver);

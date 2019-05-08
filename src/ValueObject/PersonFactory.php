@@ -21,7 +21,7 @@ final class PersonFactory implements RouteArgsResolverInterface
     public function getArgsResolver(): array
     {
         return [
-            'name' => [$this, 'getByName1'],
+            'name' => [$this, 'getByName'],
             'uid' => [$this, 'getById'],
         ];
     }
