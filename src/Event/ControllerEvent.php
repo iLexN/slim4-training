@@ -45,7 +45,6 @@ final class ControllerEvent implements \Psr\EventDispatcher\StoppableEventInterf
      */
     public function isPropagationStopped(): bool
     {
-
         return true;
     }
 }
