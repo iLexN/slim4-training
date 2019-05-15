@@ -8,9 +8,9 @@ use Ilex\Slim\RouteStrategies\RouteArgsResolverInterface;
 
 final class Case1 implements RouteArgsResolverInterface
 {
-    public function __invoke(string $value): string
+    public function __invoke(string $value): int
     {
-        return $value;
+        return 1;
     }
 
     public function get(string $value): string
@@ -18,6 +18,9 @@ final class Case1 implements RouteArgsResolverInterface
         return $value;
     }
 
+    /**
+     * @return callable[]
+     */
     public function getArgsResolver(): array
     {
         return [
