@@ -55,6 +55,18 @@ $app->get('/hello/{name}', Name::class);
 $app->get('/add/{aid:[0-9]+}', Address::class);
 $app->get('/add/{address}', Address::class);
 
+$app->get('/news[/{params:.*}]', function ($request, $response, $args) {
+    // $params is an array of all the optional segments
+
+    /* @var $route \Slim\Routing\Route */
+    $route = $request->getAttribute('route');
+
+    $params = explode('/', $args);
+    dump($params);
+    $response->getBody()->write("params");
+    return $response;
+});
+
 $app->get('/', function ($request, $response) {
     $response->getBody()->write("Home");
     return $response;
