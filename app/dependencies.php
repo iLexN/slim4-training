@@ -20,6 +20,11 @@ use Yii\EventDispatcher\Provider\Provider;
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Slim route arg resolver
+    |--------------------------------------------------------------------------
+    */
     AddressFactory::class => DI\autowire(),
     PersonFactory::class => DI\autowire(),
 
@@ -28,12 +33,24 @@ return [
         ->method('add', DI\get(PersonFactory::class)),
     RequestResponseArgs::class => DI\autowire(),
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | PSR 14
+    |--------------------------------------------------------------------------
+    */
     ListenerProviderInterface::class => DI\autowire(Provider::class)
         ->method('attach', DI\get(ControllerEventListener1::class))
         ->method('attach', DI\get(ControllerEventListener::class)),
 
     EventDispatcherInterface::class => DI\autowire(Dispatcher::class),
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | PSR 3
+    |--------------------------------------------------------------------------
+    */
     LoggerInterface::class => static function (ContainerInterface $c) {
         $setting = $c->get('logger.settings');
         $logger = new Logger($setting['name']);
@@ -42,6 +59,12 @@ return [
         return $logger;
     },
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | PSR 6
+    |--------------------------------------------------------------------------
+    */
     CacheInterface::class => static function (ContainerInterface $c) {
         $setting = $c->get('cache.file.settings');
         return new FilesystemCache(
