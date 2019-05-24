@@ -87,10 +87,10 @@ $app->get('/', function ($request, $response) {
  * Note: This Middleware should be added last. It will not handle any exceptions/errors
  * for Middleware added after it.
  */
-$callableResolver = $app->getCallableResolver();
-$responseFactory = $app->getResponseFactory();
-$errorMiddleware = new ErrorMiddleware($callableResolver, $responseFactory, true, true, true);
-$app->add($errorMiddleware);
+//$callableResolver = $app->getCallableResolver();
+//$responseFactory = $app->getResponseFactory();
+//$errorMiddleware = new ErrorMiddleware($callableResolver, $responseFactory, true, true, true);
+//$app->add($errorMiddleware);
 
 $app->add(new \App\Middleware\StopWatchMiddleware());
 

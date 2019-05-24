@@ -7,6 +7,7 @@ use App\ValueObject\AddressFactory;
 use App\ValueObject\PersonFactory;
 use Ilex\Slim\RouteStrategies\RouteArgsResolver;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
+use League\Tactician\CommandBus;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
@@ -22,10 +23,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | command bus
+    |--------------------------------------------------------------------------
+    */
+    \App\Commands\ArticleCommand\ArticleSaveHandler::class => \DI\autowire(),
+
+    CommandBus::class => static function (ContainerInterface $c) {
+        $commandBus = \League\Tactician\Setup\QuickStart::create(
+            [
+                \App\Commands\ArticleCommand\ArticleSaveCommand::class => $c->get(\App\Commands\ArticleCommand\ArticleSaveHandler::class),
+            ]
+        );
+        return $commandBus;
+    },
+
+    /*
+    |--------------------------------------------------------------------------
     | route controller (optional , for DI enableCompilation)
     |--------------------------------------------------------------------------
     */
     \App\Controller\Name::class => DI\autowire(),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -43,11 +61,16 @@ return [
     | PSR 14
     |--------------------------------------------------------------------------
     */
-    ListenerProviderInterface::class => DI\autowire(Provider::class)
-        ->method('attach', DI\get(ControllerEventListener1::class))
-        ->method('attach', DI\get(ControllerEventListener::class)),
+    //\App\EventListener\Article\PreSave\ArticleGenerateUrlListener::class => \DI\autowire(),
 
-    EventDispatcherInterface::class => DI\autowire(Dispatcher::class),
+    ListenerProviderInterface::class => DI\autowire(Provider::class)
+        ->method('attach', DI\autowire(ControllerEventListener1::class))
+        ->method('attach', DI\autowire(ControllerEventListener::class))
+        ->method('attach', DI\autowire(\App\EventListener\Article\PreSave\ArticleGenerateUrlListener::class))
+        ->method('attach', DI\autowire(\App\EventListener\Article\PreSave\ArticleDescriptionToSummaryListener::class)),
+
+
+    EventDispatcherInterface::class => \DI\autowire(Dispatcher::class),
 
 
     /*
@@ -72,7 +95,7 @@ return [
     CacheInterface::class => static function (ContainerInterface $c) {
         $setting = $c->get('cache.file.settings');
         return new FilesystemCache(
-            (string) $setting['name'],
+            (string)$setting['name'],
             $setting['lifetime'],
             $setting['path']
         );

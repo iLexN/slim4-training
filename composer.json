@@ -3,6 +3,7 @@
     "require": {
         "php": ">=7.3",
         "league/tactician": "^1.0",
+        "league/tactician-container": "^2.0",
         "monolog/monolog": "^1.24",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^0.3.0",
