@@ -9,6 +9,7 @@
         "php-di/php-di": "^6.0",
         "slim/slim": "4.x-dev",
         "symfony/cache": "^4.2",
+        "symfony/stopwatch": "^4.2",
         "yiisoft/event-dispatcher": "3.0.x-dev"
     },
     "autoload": {

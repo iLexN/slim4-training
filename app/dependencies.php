@@ -22,12 +22,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | route controller (optional , for DI enableCompilation)
+    |--------------------------------------------------------------------------
+    */
+    \App\Controller\Name::class => DI\autowire(),
+
+    /*
+    |--------------------------------------------------------------------------
     | Slim route arg resolver
     |--------------------------------------------------------------------------
     */
-    AddressFactory::class => DI\autowire(),
-    PersonFactory::class => DI\autowire(),
-
     RouteArgsResolver::class => DI\autowire()
         ->method('add', DI\get(AddressFactory::class))
         ->method('add', DI\get(PersonFactory::class)),
@@ -62,7 +66,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | PSR 6
+    | PSR 16
     |--------------------------------------------------------------------------
     */
     CacheInterface::class => static function (ContainerInterface $c) {

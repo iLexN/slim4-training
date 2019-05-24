@@ -36,7 +36,7 @@ $containerBuilder->addDefinitions(
     __DIR__ . '/../app/settings.php',
     __DIR__ . '/../app/dependencies.php'
 );
-$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
+//$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 $container = $containerBuilder->build();
 
 
@@ -84,13 +84,15 @@ $app->get('/', function ($request, $response) {
  * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
  * @param bool $logErrorDetails -> Display error details in error log
  * which can be replaced by a callable of your choice.
- * Note: This middleware should be added last. It will not handle any exceptions/errors
- * for middleware added after it.
+ * Note: This Middleware should be added last. It will not handle any exceptions/errors
+ * for Middleware added after it.
  */
 $callableResolver = $app->getCallableResolver();
 $responseFactory = $app->getResponseFactory();
 $errorMiddleware = new ErrorMiddleware($callableResolver, $responseFactory, true, true, true);
 $app->add($errorMiddleware);
+
+$app->add(new \App\Middleware\StopWatchMiddleware());
 
 $serverRequestCreator = ServerRequestCreatorFactory::create();
 $request = $serverRequestCreator->createServerRequestFromGlobals();
