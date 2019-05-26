@@ -9,7 +9,6 @@ use Psr\Log\LoggerInterface;
 
 final class ControllerEventListener1
 {
-
     /**
      * @var \Psr\Log\LoggerInterface
      */
@@ -22,7 +21,7 @@ final class ControllerEventListener1
 
     public function __invoke(ControllerEventBefore $event): void
     {
-        $this->logger->info( 'logger u');
+        $this->logger->info('logger u');
         dump('here is controller event1');
         dump($event->getArgs());
         $a = $event->getArgs();

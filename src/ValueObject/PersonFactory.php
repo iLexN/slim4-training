@@ -9,7 +9,6 @@ use Psr\Log\LoggerInterface;
 
 final class PersonFactory implements RouteArgsResolverInterface
 {
-
     /**
      * @var \Psr\Log\LoggerInterface
      */

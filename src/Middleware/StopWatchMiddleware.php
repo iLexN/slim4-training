@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Middleware;
@@ -11,7 +12,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 final class StopWatchMiddleware implements MiddlewareInterface
 {
-
     public function __construct()
     {
     }

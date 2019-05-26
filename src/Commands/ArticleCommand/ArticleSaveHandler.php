@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Commands\ArticleCommand;
@@ -9,7 +10,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class ArticleSaveHandler
 {
-
     /**
      * @var \Psr\EventDispatcher\EventDispatcherInterface
      */
@@ -20,7 +20,7 @@ final class ArticleSaveHandler
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(ArticleSaveCommand $articleSaveCommand):void
+    public function handle(ArticleSaveCommand $articleSaveCommand): void
     {
         $preSaveEvent = new ArticlePreSaveEvent($articleSaveCommand->getArticle());
         $this->dispatcher->dispatch($preSaveEvent);

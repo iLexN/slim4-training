@@ -1,15 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 
 namespace App\Commands\ArticleCommand;
 
-
 use App\ValueObject\Article\Article;
 
 final class ArticleSaveCommand
 {
-
     /**
      * @var \App\ValueObject\Article\Article
      */

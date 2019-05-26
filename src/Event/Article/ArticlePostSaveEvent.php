@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Event\Article;
@@ -7,7 +8,6 @@ use App\ValueObject\Article\Article;
 
 final class ArticlePostSaveEvent
 {
-
     /**
      * @var \App\ValueObject\Article\Article
      */

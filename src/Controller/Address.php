@@ -24,7 +24,7 @@ final class Address
      */
     private $commandBus;
 
-    public function __construct(LoggerInterface $logger,CommandBus $commandBus)
+    public function __construct(LoggerInterface $logger, CommandBus $commandBus)
     {
         $this->logger = $logger;
         $this->commandBus = $commandBus;
@@ -35,7 +35,7 @@ final class Address
         dump($address);
         $this->logger->info('address controller', [$address]);
 
-        $article = new Article('title', 'desctiption' , 1);
+        $article = new Article('title', 'desctiption', 1);
         $command = new ArticleSaveCommand($article);
         $this->commandBus->handle($command);
 

@@ -1,10 +1,15 @@
 <?php
 declare(strict_types=1);
 
+use App\Commands\ArticleCommand\ArticleSaveCommand;
+use App\Commands\ArticleCommand\ArticleSaveHandler;
+use App\EventListener\Article\PreSave\ArticleDescriptionToSummaryListener;
+use App\EventListener\Article\PreSave\ArticleGenerateUrlListener;
 use App\EventListener\ControllerEventListener;
 use App\EventListener\ControllerEventListener1;
 use App\ValueObject\AddressFactory;
 use App\ValueObject\PersonFactory;
+
 use Ilex\Slim\RouteStrategies\RouteArgsResolver;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
 use League\Tactician\CommandBus;
@@ -26,12 +31,11 @@ return [
     | command bus
     |--------------------------------------------------------------------------
     */
-    \App\Commands\ArticleCommand\ArticleSaveHandler::class => \DI\autowire(),
 
     CommandBus::class => static function (ContainerInterface $c) {
         $commandBus = \League\Tactician\Setup\QuickStart::create(
             [
-                \App\Commands\ArticleCommand\ArticleSaveCommand::class => $c->get(\App\Commands\ArticleCommand\ArticleSaveHandler::class),
+                ArticleSaveCommand::class => $c->get(ArticleSaveHandler::class),
             ]
         );
         return $commandBus;
@@ -52,7 +56,8 @@ return [
     */
     RouteArgsResolver::class => DI\autowire()
         ->method('add', DI\get(AddressFactory::class))
-        ->method('add', DI\get(PersonFactory::class)),
+        ->method('add', DI\get(PersonFactory::class))
+    ,
     RequestResponseArgs::class => DI\autowire(),
 
 
@@ -63,14 +68,15 @@ return [
     */
     //\App\EventListener\Article\PreSave\ArticleGenerateUrlListener::class => \DI\autowire(),
 
-    ListenerProviderInterface::class => DI\autowire(Provider::class)
+    ListenerProviderInterface::class =>
+        DI\autowire(Provider::class)
         ->method('attach', DI\autowire(ControllerEventListener1::class))
         ->method('attach', DI\autowire(ControllerEventListener::class))
-        ->method('attach', DI\autowire(\App\EventListener\Article\PreSave\ArticleGenerateUrlListener::class))
-        ->method('attach', DI\autowire(\App\EventListener\Article\PreSave\ArticleDescriptionToSummaryListener::class)),
+        ->method('attach', DI\autowire(ArticleDescriptionToSummaryListener::class))
+        ->method('attach', DI\autowire(ArticleGenerateUrlListener::class))
+    ,
 
-
-    EventDispatcherInterface::class => \DI\autowire(Dispatcher::class),
+    EventDispatcherInterface::class => DI\autowire(Dispatcher::class),
 
 
     /*
