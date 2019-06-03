@@ -10,8 +10,13 @@ return [
         'level' => Logger::DEBUG,
     ],
     'cache.file.settings' => [
-        'name' => 'app',
-        'lifetime' => 30,
+        'namespace' => 'app',
+        'lifetime' => 5,
         'path' => __DIR__ . '/../var/cache',
+    ],
+    'cache.redis.settings' => [
+        'dns' => 'redis://localhost',
+        'namespace' => 'app',
+        'lifetime' => 5 * 1000 * 30,
     ],
 ];

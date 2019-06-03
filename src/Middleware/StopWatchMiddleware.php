@@ -25,7 +25,7 @@ final class StopWatchMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
 
         $event = $stopwatch->stop('request');
-        dump($event->getDuration());
+        dump($event->getDuration() .'ms');
 
         return $response;
     }
