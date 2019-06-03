@@ -9,7 +9,6 @@ use App\EventListener\ControllerEventListener;
 use App\EventListener\ControllerEventListener1;
 use App\ValueObject\AddressFactory;
 use App\ValueObject\PersonFactory;
-
 use Ilex\Slim\RouteStrategies\RouteArgsResolver;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
 use League\Tactician\CommandBus;
