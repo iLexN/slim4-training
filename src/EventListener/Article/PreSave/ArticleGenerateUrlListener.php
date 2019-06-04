@@ -12,18 +12,18 @@ final class ArticleGenerateUrlListener
     /**
      * @var ShortUrlService
      */
-    private $service;
+    private $shortUrlService;
 
-    public function __construct(ShortUrlService $service)
+    public function __construct(ShortUrlService $shortUrlService)
     {
-        $this->service = $service;
+        $this->shortUrlService = $shortUrlService;
     }
 
-    public function __invoke(ArticlePreSaveEvent $event): void
+    public function __invoke(ArticlePreSaveEvent $articlePreSaveEvent): void
     {
-        $article = $event->getArticle();
+        $article = $articlePreSaveEvent->getArticle();
         if (!$article->hasUrl()) {
-            $article->url = $this->service->generateArticleUrl($article);
+            $article->url = $this->shortUrlService->generateArticleUrl($article);
         }
     }
 }

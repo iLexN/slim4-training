@@ -6,6 +6,10 @@ namespace App\ValueObject\Article;
 
 final class Article
 {
+
+    /**
+     * @var int
+     */
     private const SUMMARY_LENGTH = 2;
 
     /**

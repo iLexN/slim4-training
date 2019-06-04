@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-
 namespace App\Event;
+use Psr\EventDispatcher\StoppableEventInterface;
 
-final class ControllerEvent implements \Psr\EventDispatcher\StoppableEventInterface
+final class ControllerEvent implements StoppableEventInterface
 {
     /**
      * @var array
      */
-    private $args;
+    private $args = [];
 
     public function __construct(array $args)
     {

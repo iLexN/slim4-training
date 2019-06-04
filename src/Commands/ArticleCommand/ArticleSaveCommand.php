@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Commands\ArticleCommand;
 
 use App\ValueObject\Article\Article;
@@ -10,7 +9,7 @@ use App\ValueObject\Article\Article;
 final class ArticleSaveCommand
 {
     /**
-     * @var \App\ValueObject\Article\Article
+     * @var Article
      */
     private $article;
 
@@ -20,7 +19,7 @@ final class ArticleSaveCommand
     }
 
     /**
-     * @return \App\ValueObject\Article\Article
+     * @return Article
      */
     public function getArticle(): Article
     {

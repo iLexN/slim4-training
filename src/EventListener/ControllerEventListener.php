@@ -11,16 +11,16 @@ final class ControllerEventListener
     /**
      * interface order is after object event
      *
-     * @param \App\Event\ControllerEventInterface $event
+     * @param ControllerEventInterface $controllerEvent
      */
-    public function __invoke(ControllerEventInterface $event): void
+    public function __invoke(ControllerEventInterface $controllerEvent): void
     {
         dump('here is controller event');
-        dump($event->getArgs());
-        $a = $event->getArgs();
+        dump($controllerEvent->getArgs());
+        $a = $controllerEvent->getArgs();
         if (isset($a['name'])) {
-            $a['name'] .= ' (interface)' . $event->getName();
+            $a['name'] .= ' (interface)' . $controllerEvent->getName();
         }
-        $event->setArgs($a);
+        $controllerEvent->setArgs($a);
     }
 }

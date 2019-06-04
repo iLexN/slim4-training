@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Event;
 
 final class ControllerEventBefore implements ControllerEventInterface
@@ -10,7 +9,7 @@ final class ControllerEventBefore implements ControllerEventInterface
     /**
      * @var array
      */
-    private $args;
+    private $args = [];
 
     public function __construct(array $args)
     {

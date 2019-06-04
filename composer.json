@@ -24,11 +24,12 @@
         "roave/security-advisories": "dev-master",
         "symfony/console": "^4.2",
         "symfony/var-dumper": "^4.2",
-        "symplify/easy-coding-standard": "^5.4"
+        "symplify/easy-coding-standard": "^6.0"
     },
     "config": {
         "process-timeout": 0,
-        "sort-packages": true
+        "sort-packages": true,
+        "optimize-autoloader": true
     },
     "autoload": {
         "psr-4": {

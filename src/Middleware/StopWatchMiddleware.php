@@ -16,13 +16,16 @@ final class StopWatchMiddleware implements MiddlewareInterface
     {
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(
+        ServerRequestInterface $serverRequest,
+        RequestHandlerInterface $requestHandler
+    ): ResponseInterface
     {
         $stopwatch = new StopWatch();
         $stopwatch->start('request');
 
         /** @var ResponseInterface $response */
-        $response = $handler->handle($request);
+        $response = $requestHandler->handle($serverRequest);
 
         $event = $stopwatch->stop('request');
         dump($event->getDuration() . 'ms');

@@ -9,7 +9,7 @@ final class ControllerEventAfter implements ControllerEventInterface
     /**
      * @var array
      */
-    private $args;
+    private $args = [];
 
     public function __construct(array $args)
     {

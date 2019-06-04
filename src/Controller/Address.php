@@ -15,12 +15,12 @@ use Psr\Log\LoggerInterface;
 final class Address
 {
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
     /**
-     * @var \League\Tactician\CommandBus
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -30,16 +30,20 @@ final class Address
         $this->commandBus = $commandBus;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Address1 $address): ResponseInterface
+    public function __invoke(
+        ServerRequestInterface $serverRequest,
+        ResponseInterface $response,
+        Address1 $address1
+    ): ResponseInterface
     {
-        dump($address);
-        $this->logger->info('address controller', [$address]);
+        dump($address1);
+        $this->logger->info('address controller', [$address1]);
 
         $article = new Article('title', 'desctiption', 1);
         $command = new ArticleSaveCommand($article);
         $this->commandBus->handle($command);
 
-        $response->getBody()->write('Hello, ' . $address->getAddress());
+        $response->getBody()->write('Hello, ' . $address1->getAddress());
         return $response;
     }
 }

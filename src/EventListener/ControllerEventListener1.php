@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 final class ControllerEventListener1
 {
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
@@ -19,16 +19,16 @@ final class ControllerEventListener1
         $this->logger = $logger;
     }
 
-    public function __invoke(ControllerEventBefore $event): void
+    public function __invoke(ControllerEventBefore $controllerEventBefore): void
     {
         $this->logger->info('logger u');
         dump('here is controller event1');
-        dump($event->getArgs());
-        $a = $event->getArgs();
+        dump($controllerEventBefore->getArgs());
+        $a = $controllerEventBefore->getArgs();
         if (isset($a['name'])) {
             $a['name'] .= ' (before)';
         }
-        dump($event->getName());
-        $event->setArgs($a);
+        dump($controllerEventBefore->getName());
+        $controllerEventBefore->setArgs($a);
     }
 }

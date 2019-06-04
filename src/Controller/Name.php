@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Contracts\Cache\CacheInterface as SymfonyCache;
 use Symfony\Contracts\Cache\ItemInterface;
+use Psr\Cache\InvalidArgumentException;
 
 final class Name
 {
@@ -29,14 +30,14 @@ final class Name
     private $cache;
 
     /**
-     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     * @var EventDispatcherInterface
      */
-    private $dispatcher;
+    private $eventDispatcher;
 
     /**
-     * @var \Psr\Cache\CacheItemPoolInterface
+     * @var CacheItemPoolInterface
      */
-    private $psr6;
+    private $cacheItemPool;
 
     /**
      * @var \Symfony\Contracts\Cache\CacheInterface
@@ -46,35 +47,35 @@ final class Name
     public function __construct(
         LoggerInterface $logger,
         CacheInterface $cache,
-        EventDispatcherInterface $dispatcher,
-        CacheItemPoolInterface $psr6,
-        SymfonyCache $sfCache
+        EventDispatcherInterface $eventDispatcher,
+        CacheItemPoolInterface $cacheItemPool,
+        SymfonyCache $symfonyCache
     ) {
         $this->logger = $logger;
         $this->cache = $cache;
-        $this->dispatcher = $dispatcher;
-        $this->psr6 = $psr6;
-        $this->sfCache = $sfCache;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->cacheItemPool = $cacheItemPool;
+        $this->sfCache = $symfonyCache;
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface $response
-     * @param \App\ValueObject\Person $person1
+     * @param ServerRequestInterface $serverRequest
+     * @param ResponseInterface $response
+     * @param Person $person
      *
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @return ResponseInterface
+     * @throws InvalidArgumentException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function __invoke(
-        ServerRequestInterface $request,
+        ServerRequestInterface $serverRequest,
         ResponseInterface $response,
-        Person $person1
+        Person $person
     ): ResponseInterface {
-        $this->logger->info('input args', [$person1]);
+        $this->logger->info('input args', [$person]);
 
         $event = new ControllerEventBefore(['name' => 'a']);
-        $this->dispatcher->dispatch($event);
+        $this->eventDispatcher->dispatch($event);
         $args = $event->getArgs();
         dump($args);
 
@@ -86,7 +87,7 @@ final class Name
             $this->cache->set('person.ilex', $person);
         }
 
-        $p2 = $this->psr6->get('person2', static function (ItemInterface $item) {
+        $p2 = $this->cacheItemPool->get('person2', static function (ItemInterface $item) {
             dump('no psr6 cache');
             return new Person('ilex2', 'ilex2');
         });
@@ -97,7 +98,7 @@ final class Name
 
 
         $event = new ControllerEventAfter($args);
-        $this->dispatcher->dispatch($event);
+        $this->eventDispatcher->dispatch($event);
         $args = $event->getArgs();
 
         $response->getBody()->write('Hello, ' . $args['name']);

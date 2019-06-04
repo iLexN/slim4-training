@@ -9,7 +9,7 @@ use App\ValueObject\Article\Article;
 final class ArticlePostSaveEvent
 {
     /**
-     * @var \App\ValueObject\Article\Article
+     * @var Article
      */
     private $article;
 
@@ -19,7 +19,7 @@ final class ArticlePostSaveEvent
     }
 
     /**
-     * @return \App\ValueObject\Article\Article
+     * @return Article
      */
     public function getArticle(): Article
     {

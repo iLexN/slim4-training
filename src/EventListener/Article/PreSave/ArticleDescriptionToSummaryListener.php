@@ -8,9 +8,9 @@ use App\Event\Article\ArticlePreSaveEvent;
 
 final class ArticleDescriptionToSummaryListener
 {
-    public function __invoke(ArticlePreSaveEvent $event): void
+    public function __invoke(ArticlePreSaveEvent $articlePreSaveEvent): void
     {
-        $article = $event->getArticle();
+        $article = $articlePreSaveEvent->getArticle();
         dump('aa');
         if (!$article->hasSummary()) {
             dump('bb');

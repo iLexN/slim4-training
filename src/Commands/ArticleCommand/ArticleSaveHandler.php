@@ -11,24 +11,24 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 final class ArticleSaveHandler
 {
     /**
-     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     * @var EventDispatcherInterface
      */
-    private $dispatcher;
+    private $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $dispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
-        $this->dispatcher = $dispatcher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function handle(ArticleSaveCommand $articleSaveCommand): void
     {
         $preSaveEvent = new ArticlePreSaveEvent($articleSaveCommand->getArticle());
-        $this->dispatcher->dispatch($preSaveEvent);
+        $this->eventDispatcher->dispatch($preSaveEvent);
 
         //save
         dump($preSaveEvent->getArticle());
 
         $postSaveEvent = new ArticlePostSaveEvent($articleSaveCommand->getArticle());
-        $this->dispatcher->dispatch($postSaveEvent);
+        $this->eventDispatcher->dispatch($postSaveEvent);
     }
 }
