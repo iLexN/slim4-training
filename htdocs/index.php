@@ -9,6 +9,7 @@ use App\ValueObject\AddressFactory;
 use DI\ContainerBuilder;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\SimpleCache\CacheInterface;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
@@ -40,15 +41,30 @@ $containerBuilder->addDefinitions(
 $container = $containerBuilder->build();
 
 
-// Instantiate the app
+/*
+|--------------------------------------------------------------------------
+| Instantiate the app
+|--------------------------------------------------------------------------
+*/
 AppFactory::setContainer($container);
+AppFactory::setResponseFactory($container->get(ResponseFactoryInterface::class));
+
 $app = AppFactory::create();
 
+/*
+|--------------------------------------------------------------------------
+| url resolver
+|--------------------------------------------------------------------------
+*/
 $urlResolver = $container->get(RequestResponseArgs::class);
-
 $routeCollector = $app->getRouteCollector();
 $routeCollector->setDefaultInvocationStrategy($urlResolver);
 
+/*
+|--------------------------------------------------------------------------
+| route
+|--------------------------------------------------------------------------
+*/
 $app->get('/hello/{uid:[0-9]+}', Name::class);
 $app->get('/hello/{name}', Name::class);
 
@@ -78,23 +94,30 @@ $app->get('/', function ($request, $response) {
 
 /**
  * The constructor of ErrorMiddleware takes in 5 parameters
- * @param CallableResolverInterface $callableResolver -> CallableResolver implementation of your choice
- * @param ResponseFactoryInterface $responseFactory -> ResponseFactory implementation of your choice
+ *
+ * @param CallableResolverInterface $callableResolver -> CallableResolver
+ *     implementation of your choice
+ * @param ResponseFactoryInterface $responseFactory -> ResponseFactory
+ *     implementation of your choice
  * @param bool $displayErrorDetails -> Should be set to false in production
  * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
  * @param bool $logErrorDetails -> Display error details in error log
  * which can be replaced by a callable of your choice.
- * Note: This Middleware should be added last. It will not handle any exceptions/errors
- * for Middleware added after it.
+ * Note: This Middleware should be added last. It will not handle any
+ *     exceptions/errors for Middleware added after it.
  */
 //$callableResolver = $app->getCallableResolver();
 //$responseFactory = $app->getResponseFactory();
 //$errorMiddleware = new ErrorMiddleware($callableResolver, $responseFactory, true, true, true);
 //$app->add($errorMiddleware);
 
+/*
+|--------------------------------------------------------------------------
+| Middleware
+|--------------------------------------------------------------------------
+*/
 $app->add(new \App\Middleware\StopWatchMiddleware());
 
-$serverRequestCreator = ServerRequestCreatorFactory::create();
-$request = $serverRequestCreator->createServerRequestFromGlobals();
+$request = $container->get('currentServerRequest');
 
 $app->run($request);

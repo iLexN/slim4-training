@@ -18,7 +18,6 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 final class Name
 {
-
     /**
      * @var LoggerInterface
      */
@@ -58,13 +57,13 @@ final class Name
         $this->sfCache = $sfCache;
     }
 
-
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface $response
      * @param \App\ValueObject\Person $person1
      *
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \Psr\Cache\InvalidArgumentException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function __invoke(
@@ -81,19 +80,19 @@ final class Name
 
         $person = $this->cache->get('person.ilex');
         if (null === $person) {
-            $this->logger->info('no cache person');
-            dump('here create cache');
-            $person = new Person('ilexn', 'ilex.job');
+            $this->logger->info('no psr16 cache person');
+            dump('no psr16 cache person');
+            $person = new Person('ilex', 'ilex.job');
             $this->cache->set('person.ilex', $person);
         }
 
-        $p2 = $this->psr6->get('person2', function (ItemInterface $item) {
-            dump('cache callback');
-            return new Person('ilexn2', 'ilex2');
+        $p2 = $this->psr6->get('person2', static function (ItemInterface $item) {
+            dump('no psr6 cache');
+            return new Person('ilex2', 'ilex2');
         });
         dump($p2);
 
-        $p3 = $this->sfCache->get('person3', [$this,'cacheCallback']);
+        $p3 = $this->sfCache->get('person3', [$this, 'cacheCallback']);
         dump($p3);
 
 
@@ -107,8 +106,8 @@ final class Name
 
     public function cacheCallback(ItemInterface $item): Person
     {
-        dump(__METHOD__);
+        dump('no sf cache with tag');
         $item->tag('tag_1');
-        return new Person('ilexn3', 'ilex3');
+        return new Person('ilex 3', 'ilex3');
     }
 }

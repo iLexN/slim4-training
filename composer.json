@@ -3,6 +3,7 @@
     "description": "use slim4 as training",
     "require": {
         "php": ">=7.3",
+        "http-interop/http-factory-discovery": "^1.5",
         "league/tactician": "^1.0",
         "league/tactician-container": "^2.0",
         "monolog/monolog": "^1.24",

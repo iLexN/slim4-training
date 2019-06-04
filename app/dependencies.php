@@ -9,6 +9,7 @@ use App\EventListener\ControllerEventListener;
 use App\EventListener\ControllerEventListener1;
 use App\ValueObject\AddressFactory;
 use App\ValueObject\PersonFactory;
+use Http\Factory\Discovery\HttpFactory;
 use Ilex\Slim\RouteStrategies\RouteArgsResolver;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
 use League\Tactician\CommandBus;
@@ -18,15 +19,22 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UploadedFileFactoryInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
+use Slim\Factory\ServerRequestCreatorFactory;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Contracts\Cache\CacheInterface as SymfonyCache;
-use Yii\EventDispatcher\Dispatcher;
-use Yii\EventDispatcher\Provider\Provider;
+use Yiisoft\EventDispatcher\Dispatcher;
+use Yiisoft\EventDispatcher\Provider\Provider;
 
 return [
 
@@ -63,6 +71,41 @@ return [
         ->method('add', DI\get(PersonFactory::class))
     ,
     RequestResponseArgs::class => DI\autowire(),
+
+    /*
+    |--------------------------------------------------------------------------
+    | PSR 17
+    |--------------------------------------------------------------------------
+    */
+    RequestFactoryInterface::class => DI\factory([
+        HttpFactory::class,
+        'requestFactory',
+    ]),
+    ResponseFactoryInterface::class => DI\factory([
+        HttpFactory::class,
+        'responseFactory',
+    ]),
+    ServerRequestFactoryInterface::class => DI\factory([
+        HttpFactory::class,
+        'serverRequestFactory',
+    ]),
+    StreamFactoryInterface::class => DI\factory([
+        HttpFactory::class,
+        'streamFactory',
+    ]),
+    UriFactoryInterface::class => DI\factory([
+        HttpFactory::class,
+        'uriFactory',
+    ]),
+    UploadedFileFactoryInterface::class => DI\factory([
+        HttpFactory::class,
+        'uploadedFileFactory',
+    ]),
+
+    'currentServerRequest' => static function () {
+        $serverRequestCreator = ServerRequestCreatorFactory::create();
+        return $serverRequestCreator->createServerRequestFromGlobals();
+    },
 
 
     /*
@@ -144,5 +187,5 @@ return [
     |--------------------------------------------------------------------------
     */
     SymfonyCache::class => DI\autowire(TagAwareAdapter::class)
-        ->constructor(DI\get('psr6Redis')),
+        ->constructor(DI\get('psr6File')),
 ];

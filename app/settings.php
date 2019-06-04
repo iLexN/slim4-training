@@ -17,6 +17,6 @@ return [
     'cache.redis.settings' => [
         'dns' => 'redis://localhost',
         'namespace' => 'app',
-        'lifetime' => 5 * 1000 * 30,
+        'lifetime' => 5,
     ],
 ];
