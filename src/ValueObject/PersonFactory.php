@@ -31,9 +31,9 @@ final class PersonFactory implements RouteArgsResolverInterface
     }
 
     /**
-     * @return array
+     * @return iterable
      */
-    public function getArgsResolver(): array
+    public function getArgsResolver(): iterable
     {
         return [
             'name' => [$this, 'getByName'],

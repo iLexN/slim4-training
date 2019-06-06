@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Ilex\Slim\RouteStrategies;
 
 use Ilex\Slim\RouteStrategies\Exception\RouteArgsResolverException;
-use function array_key_exists;
-use function is_callable;
 
 final class RouteArgsResolver
 {
@@ -14,10 +12,6 @@ final class RouteArgsResolver
      * @var callable[]
      */
     private $resolvers = [];
-
-    public function __construct()
-    {
-    }
 
     /**
      * @param RouteArgsResolverInterface $routeArgsResolver
@@ -60,11 +54,11 @@ final class RouteArgsResolver
      */
     private function isValid(string $key, $callable): void
     {
-        if (array_key_exists($key, $this->resolvers)) {
+        if (\array_key_exists($key, $this->resolvers)) {
             throw RouteArgsResolverException::keyAlreadyExist($key);
         }
 
-        if (!is_callable($callable)) {
+        if (!\is_callable($callable)) {
             throw RouteArgsResolverException::isNotCallable($key);
         }
     }

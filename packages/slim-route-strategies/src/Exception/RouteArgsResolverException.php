@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Ilex\Slim\RouteStrategies\Exception;
 
-use Exception;
-
-final class RouteArgsResolverException extends Exception
+final class RouteArgsResolverException extends \Exception
 {
     public static function keyAlreadyExist(string $key): self
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\ValueObject\Article\Article;
-use function strlen;
 
 final class ShortUrlService
 {
@@ -20,7 +19,7 @@ final class ShortUrlService
         $randomString = '';
 
         for ($i = 0; $i < $num; $i++) {
-            $index = \random_int(0, strlen($characters) - 1);
+            $index = \random_int(0, \strlen($characters) - 1);
             $randomString .= $characters[$index];
         }
 

@@ -42,7 +42,7 @@ final class RequestResponseArgs implements InvocationStrategyInterface
         ResponseInterface $response,
         array $routeArguments
     ): ResponseInterface {
-        $newRouteArguments = array_map(
+        $newRouteArguments = \array_map(
             [$this, 'resolve'],
             array_keys($routeArguments),
             $routeArguments

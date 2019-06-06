@@ -13,7 +13,7 @@ final class AddressFactory implements RouteArgsResolverInterface
         return new Address($value);
     }
 
-    public function getArgsResolver(): array
+    public function getArgsResolver(): iterable
     {
         return [
             'address' => [$this, 'get'],
