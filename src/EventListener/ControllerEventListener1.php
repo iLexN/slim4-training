@@ -24,11 +24,11 @@ final class ControllerEventListener1
         $this->logger->info('logger u');
         dump('here is controller event1');
         dump($controllerEventBefore->getArgs());
-        $a = $controllerEventBefore->getArgs();
-        if (isset($a['name'])) {
-            $a['name'] .= ' (before)';
+        $args = $controllerEventBefore->getArgs();
+        if (isset($args['name'])) {
+            $args['name'] .= ' (before)';
         }
         dump($controllerEventBefore->getName());
-        $controllerEventBefore->setArgs($a);
+        $controllerEventBefore->setArgs($args);
     }
 }

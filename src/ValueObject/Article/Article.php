@@ -6,10 +6,6 @@ namespace App\ValueObject\Article;
 
 final class Article
 {
-
-    /**
-     * @var int
-     */
     private const SUMMARY_LENGTH = 2;
 
     /**
@@ -53,7 +49,7 @@ final class Article
 
     public function hasSummary(): bool
     {
-        return '' !== $this->summary;
+        return $this->summary !== '';
     }
 
     public function descriptionToSummary(): string
@@ -63,6 +59,6 @@ final class Article
 
     public function hasUrl(): bool
     {
-        return '' !== $this->url;
+        return $this->url !== '';
     }
 }

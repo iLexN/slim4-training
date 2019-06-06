@@ -30,6 +30,9 @@ final class PersonFactory implements RouteArgsResolverInterface
         return new Person($id, 'uid:' . $id);
     }
 
+    /**
+     * @return array
+     */
     public function getArgsResolver(): array
     {
         return [

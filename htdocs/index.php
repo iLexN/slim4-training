@@ -1,26 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Controller\Address;
 use App\Controller\Name;
-use App\ValueObject\AddressFactory;
 use DI\ContainerBuilder;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\SimpleCache\CacheInterface;
 use Slim\Factory\AppFactory;
-use Slim\Factory\ServerRequestCreatorFactory;
-use Slim\Middleware\ErrorMiddleware;
-use Slim\Middleware\RoutingMiddleware;
-use Symfony\Component\VarDumper\Cloner\VarCloner;
-use Symfony\Component\VarDumper\Dumper\CliDumper;
-use Symfony\Component\VarDumper\Dumper\ContextProvider\CliContextProvider;
-use Symfony\Component\VarDumper\Dumper\ContextProvider\SourceContextProvider;
-use Symfony\Component\VarDumper\Dumper\ServerDumper;
-use Symfony\Component\VarDumper\VarDumper;
 
 //VarDumper::setHandler(static function ($var) {
 //    $clone = new VarCloner();
@@ -73,9 +62,6 @@ $app->get('/add/{address}', Address::class);
 
 $app->get('/news[/{params:.*}]', function ($request, $response, $args) {
     // $params is an array of all the optional segments
-
-    /* @var $route \Slim\Routing\Route */
-    $route = $request->getAttribute('route');
 
     $params = explode('/', $args);
     dump($params);

@@ -34,8 +34,7 @@ final class Address
         ServerRequestInterface $serverRequest,
         ResponseInterface $response,
         Address1 $address1
-    ): ResponseInterface
-    {
+    ): ResponseInterface {
         dump($address1);
         $this->logger->info('address controller', [$address1]);
 

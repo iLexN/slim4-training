@@ -5,23 +5,22 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\ValueObject\Article\Article;
-use function random_int;
 use function strlen;
 
 final class ShortUrlService
 {
     public function generateArticleUrl(Article $article): string
     {
-        return $this->gen(10);
+        return $article->title . $this->gen(10);
     }
 
-    private function gen(int $n): string
+    private function gen(int $num): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
 
-        for ($i = 0; $i < $n; $i++) {
-            $index = random_int(0, strlen($characters) - 1);
+        for ($i = 0; $i < $num; $i++) {
+            $index = \random_int(0, strlen($characters) - 1);
             $randomString .= $characters[$index];
         }
 

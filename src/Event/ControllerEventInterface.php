@@ -7,15 +7,15 @@ namespace App\Event;
 interface ControllerEventInterface
 {
     /**
-     * @return mixed
+     * @return array
      */
-    public function getArgs();
+    public function getArgs(): array;
 
 
     /**
-     * @param mixed $args
+     * @param array $args
      */
-    public function setArgs($args): void;
+    public function setArgs(array $args): void;
 
     public function getName(): string;
 }

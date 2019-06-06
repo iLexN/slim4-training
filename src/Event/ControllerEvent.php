@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Event;
+
 use Psr\EventDispatcher\StoppableEventInterface;
 
 final class ControllerEvent implements StoppableEventInterface
@@ -10,7 +11,7 @@ final class ControllerEvent implements StoppableEventInterface
     /**
      * @var array
      */
-    private $args = [];
+    private $args;
 
     public function __construct(array $args)
     {
@@ -18,17 +19,17 @@ final class ControllerEvent implements StoppableEventInterface
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getArgs()
+    public function getArgs(): array
     {
         return $this->args;
     }
 
     /**
-     * @param mixed $args
+     * @param array $args
      */
-    public function setArgs($args): void
+    public function setArgs(array $args): void
     {
         $this->args = $args;
     }
@@ -40,8 +41,8 @@ final class ControllerEvent implements StoppableEventInterface
      * previous listener halted propagation.
      *
      * @return bool
-     *   True if the Event is complete and no further listeners should be called.
-     *   False to continue calling listeners.
+     *   True if the Event is complete and no further listeners should be
+     *     called. False to continue calling listeners.
      */
     public function isPropagationStopped(): bool
     {

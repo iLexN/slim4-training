@@ -17,17 +17,17 @@ final class ControllerEventBefore implements ControllerEventInterface
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getArgs()
+    public function getArgs(): array
     {
         return $this->args;
     }
 
     /**
-     * @param mixed $args
+     * @param array $args
      */
-    public function setArgs($args): void
+    public function setArgs(array $args): void
     {
         $this->args = $args;
     }

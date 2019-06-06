@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Commands\ArticleCommand\ArticleSaveCommand;
@@ -43,13 +44,12 @@ return [
     | command bus
     |--------------------------------------------------------------------------
     */
-    CommandBus::class => static function (ContainerInterface $c) {
-        $commandBus = \League\Tactician\Setup\QuickStart::create(
+    CommandBus::class => static function (ContainerInterface $container) {
+        return \League\Tactician\Setup\QuickStart::create(
             [
-                ArticleSaveCommand::class => $c->get(ArticleSaveHandler::class),
+                ArticleSaveCommand::class => $container->get(ArticleSaveHandler::class),
             ]
         );
-        return $commandBus;
     },
 
 
@@ -131,8 +131,8 @@ return [
     | PSR 3
     |--------------------------------------------------------------------------
     */
-    LoggerInterface::class => static function (ContainerInterface $c) {
-        $setting = $c->get('logger.settings');
+    LoggerInterface::class => static function (ContainerInterface $container) {
+        $setting = $container->get('logger.settings');
         $logger = new Logger($setting['name']);
         $handler = new StreamHandler($setting['path'], $setting['level']);
         $logger->pushHandler($handler);
@@ -144,16 +144,16 @@ return [
     | PSR 6
     |--------------------------------------------------------------------------
     */
-    'psr6File' => static function (ContainerInterface $c) {
-        $setting = $c->get('cache.file.settings');
+    'psr6File' => static function (ContainerInterface $container) {
+        $setting = $container->get('cache.file.settings');
         return new FilesystemAdapter(
             $setting['namespace'],
             $setting['lifetime'],
             $setting['path']
         );
     },
-    'psr6Redis' => static function (ContainerInterface $c) {
-        $setting = $c->get('cache.redis.settings');
+    'psr6Redis' => static function (ContainerInterface $container) {
+        $setting = $container->get('cache.redis.settings');
         $client = RedisAdapter::createConnection(
             $setting['dns']
         );
@@ -164,8 +164,8 @@ return [
         );
     },
 
-    CacheItemPoolInterface::class => static function (ContainerInterface $c) {
-        return $c->get('psr6Redis');
+    CacheItemPoolInterface::class => static function (ContainerInterface $container) {
+        return $container->get('psr6Redis');
     },
 
 
@@ -174,9 +174,9 @@ return [
     | PSR 16
     |--------------------------------------------------------------------------
     */
-    CacheInterface::class => static function (ContainerInterface $c) {
+    CacheInterface::class => static function (ContainerInterface $container) {
         return new Psr16Cache(
-            $c->get(CacheItemPoolInterface::class)
+            $container->get(CacheItemPoolInterface::class)
         );
     },
 

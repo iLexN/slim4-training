@@ -15,7 +15,6 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Contracts\Cache\CacheInterface as SymfonyCache;
 use Symfony\Contracts\Cache\ItemInterface;
-use Psr\Cache\InvalidArgumentException;
 
 final class Name
 {
@@ -64,7 +63,7 @@ final class Name
      * @param Person $person
      *
      * @return ResponseInterface
-     * @throws InvalidArgumentException
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function __invoke(
@@ -79,23 +78,11 @@ final class Name
         $args = $event->getArgs();
         dump($args);
 
-        $person = $this->cache->get('person.ilex');
-        if (null === $person) {
-            $this->logger->info('no psr16 cache person');
-            dump('no psr16 cache person');
-            $person = new Person('ilex', 'ilex.job');
-            $this->cache->set('person.ilex', $person);
-        }
+        $this->cachePsr16();
 
-        $p2 = $this->cacheItemPool->get('person2', static function (ItemInterface $item) {
-            dump('no psr6 cache');
-            return new Person('ilex2', 'ilex2');
-        });
-        dump($p2);
+        $this->cachePsr6();
 
-        $p3 = $this->sfCache->get('person3', [$this, 'cacheCallback']);
-        dump($p3);
-
+        $this->cacheSF();
 
         $event = new ControllerEventAfter($args);
         $this->eventDispatcher->dispatch($event);
@@ -110,5 +97,37 @@ final class Name
         dump('no sf cache with tag');
         $item->tag('tag_1');
         return new Person('ilex 3', 'ilex3');
+    }
+
+    /**
+     * @return void
+     *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    private function cachePsr16(): void
+    {
+        $person = $this->cache->get('person.ilex');
+        if ($person === null) {
+            $this->logger->info('no psr16 cache person');
+            dump('no psr16 cache person');
+            $person = new Person('ilex', 'ilex.job');
+            $this->cache->set('person.ilex', $person);
+        }
+        dump($person);
+    }
+
+    private function cachePsr6(): void
+    {
+        $p22 = $this->cacheItemPool->getItem('p22');
+        if (!$p22->isHit()) {
+            $aaa = '33333';
+            $p22->set($aaa);
+        }
+    }
+
+    private function cacheSF(): void
+    {
+        $p33 = $this->sfCache->get('person3', [$this, 'cacheCallback']);
+        dump($p33);
     }
 }

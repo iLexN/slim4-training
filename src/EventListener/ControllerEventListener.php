@@ -17,10 +17,10 @@ final class ControllerEventListener
     {
         dump('here is controller event');
         dump($controllerEvent->getArgs());
-        $a = $controllerEvent->getArgs();
-        if (isset($a['name'])) {
-            $a['name'] .= ' (interface)' . $controllerEvent->getName();
+        $args = $controllerEvent->getArgs();
+        if (isset($args['name'])) {
+            $args['name'] .= ' (interface)' . $controllerEvent->getName();
         }
-        $controllerEvent->setArgs($a);
+        $controllerEvent->setArgs($args);
     }
 }

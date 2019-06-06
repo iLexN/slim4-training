@@ -42,7 +42,11 @@ final class RequestResponseArgs implements InvocationStrategyInterface
         ResponseInterface $response,
         array $routeArguments
     ): ResponseInterface {
-        $newRouteArguments = array_map([$this, 'resolve'], array_keys($routeArguments), $routeArguments);
+        $newRouteArguments = array_map(
+            [$this, 'resolve'],
+            array_keys($routeArguments),
+            $routeArguments
+        );
 
         return $callable($serverRequest, $response, ...array_values($newRouteArguments));
     }
@@ -50,6 +54,7 @@ final class RequestResponseArgs implements InvocationStrategyInterface
     /**
      * @param string $key
      * @param string $value
+     *
      * @return mixed
      */
     private function resolve(string $key, string $value)
