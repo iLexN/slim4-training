@@ -5,3 +5,4 @@ var/cache/
 var/logs/
 .phpunit.result.cache
 .phpstorm.meta.php
+*infection.log
