@@ -10,6 +10,9 @@ use App\EventListener\ControllerEventListener;
 use App\EventListener\ControllerEventListener1;
 use App\ValueObject\AddressFactory;
 use App\ValueObject\PersonFactory;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Setup;
 use Http\Factory\Discovery\HttpFactory;
 use Ilex\Slim\RouteStrategies\RouteArgsResolver;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
@@ -74,7 +77,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | PSR 17
+    | PSR 17 auto discover
     |--------------------------------------------------------------------------
     */
     RequestFactoryInterface::class => DI\factory([
@@ -164,7 +167,9 @@ return [
         );
     },
 
-    CacheItemPoolInterface::class => static function (ContainerInterface $container) {
+    CacheItemPoolInterface::class => static function (
+        ContainerInterface $container
+    ) {
         return $container->get('psr6Redis');
     },
 
@@ -188,4 +193,30 @@ return [
     */
     SymfonyCache::class => DI\autowire(TagAwareAdapter::class)
         ->constructor(DI\get('psr6File')),
+
+    /*
+    |--------------------------------------------------------------------------
+    | doctrine
+    |--------------------------------------------------------------------------
+    */
+    EntityManagerInterface::class => static function () {
+        $isDevMode = true;
+        $config = Setup::createAnnotationMetadataConfiguration([__DIR__ . '/../src'],
+            $isDevMode);
+        $conn = \Doctrine\DBAL\DriverManager::getConnection([
+            'dbname' => 'ilex1',
+            'user' => 'ggg',
+            'password' => 'ggg',
+            'host' => '127.0.0.1',
+            //'port' => '3367',
+            'driver' => 'pdo_mysql',
+        ], new \Doctrine\DBAL\Configuration());
+        return EntityManager::create($conn, $config);
+    },
+
+    \App\Doctrine\UserRepository::class => static function (
+        EntityManagerInterface $entityManager
+    ) {
+        return $entityManager->getRepository(\App\Doctrine\User::class);
+    },
 ];

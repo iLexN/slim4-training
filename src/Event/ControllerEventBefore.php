@@ -17,7 +17,7 @@ final class ControllerEventBefore implements ControllerEventInterface
     }
 
     /**
-     * @return array
+     * @return array|string[]
      */
     public function getArgs(): array
     {
@@ -32,6 +32,9 @@ final class ControllerEventBefore implements ControllerEventInterface
         $this->args = $args;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return 'before';

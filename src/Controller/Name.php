@@ -75,6 +75,7 @@ final class Name
 
         $event = new ControllerEventBefore(['name' => 'a']);
         $this->eventDispatcher->dispatch($event);
+        /** @var string[] $args */
         $args = $event->getArgs();
         dump($args);
 
@@ -88,7 +89,7 @@ final class Name
         $this->eventDispatcher->dispatch($event);
         $args = $event->getArgs();
 
-        $response->getBody()->write('Hello, ' . $args['name']);
+        $response->getBody()->write('Hello1, ' . $args['name']);
         return $response;
     }
 

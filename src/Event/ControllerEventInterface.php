@@ -7,7 +7,7 @@ namespace App\Event;
 interface ControllerEventInterface
 {
     /**
-     * @return array
+     * @return array|string[]
      */
     public function getArgs(): array;
 

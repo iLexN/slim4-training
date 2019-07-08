@@ -10,6 +10,12 @@ use DI\ContainerBuilder;
 use Ilex\Slim\RouteStrategies\Strategies\RequestResponseArgs;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\Factory\AppFactory;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\Dumper\ContextProvider\CliContextProvider;
+use Symfony\Component\VarDumper\Dumper\ContextProvider\SourceContextProvider;
+use Symfony\Component\VarDumper\Dumper\ServerDumper;
+use Symfony\Component\VarDumper\VarDumper;
 
 //VarDumper::setHandler(static function ($var) {
 //    $clone = new VarCloner();
@@ -40,6 +46,7 @@ AppFactory::setResponseFactory($container->get(ResponseFactoryInterface::class))
 
 $app = AppFactory::create();
 
+
 /*
 |--------------------------------------------------------------------------
 | url resolver
@@ -48,6 +55,7 @@ $app = AppFactory::create();
 $urlResolver = $container->get(RequestResponseArgs::class);
 $routeCollector = $app->getRouteCollector();
 $routeCollector->setDefaultInvocationStrategy($urlResolver);
+//$routeCollector->setCacheFile(__DIR__.'/../var/cache/route.cache');
 
 /*
 |--------------------------------------------------------------------------
@@ -71,8 +79,12 @@ $app->get('/news[/{params:.*}]', function ($request, $response, $args) {
 
 $app->get('/', function ($request, $response) {
     $response->getBody()->write("Home");
+
+
+
     return $response;
 });
+
 
 //$routeResolver = $app->getRouteResolver();
 //$routingMiddleware = new RoutingMiddleware($routeResolver);

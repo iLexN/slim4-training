@@ -31,7 +31,7 @@ final class PersonFactory implements RouteArgsResolverInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable|callable[]
      */
     public function getArgsResolver(): iterable
     {

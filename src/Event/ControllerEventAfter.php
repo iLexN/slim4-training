@@ -32,6 +32,9 @@ final class ControllerEventAfter implements ControllerEventInterface
         $this->args = $args;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return 'after';

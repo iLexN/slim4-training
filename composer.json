@@ -3,19 +3,23 @@
     "description": "use slim4 as training",
     "require": {
         "php": ">=7.3",
+        "doctrine/orm": "^2.6",
         "http-interop/http-factory-discovery": "^1.5",
+        "illuminate/database": "^5.8",
         "league/tactician": "^1.0",
         "league/tactician-container": "^2.0",
         "monolog/monolog": "^1.24",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^0.3.0",
         "php-di/php-di": "^6.0",
+        "robmorgan/phinx": "^0.10.7",
         "slim/slim": "4.x-dev",
         "symfony/cache": "^4.2",
         "symfony/stopwatch": "^4.2",
         "yiisoft/event-dispatcher": "3.0.x-dev"
     },
     "require-dev": {
+        "fzaninotto/faker": "^1.8",
         "infection/infection": "^0.13.1",
         "localheinz/composer-normalize": "^1.1",
         "nunomaduro/phpinsights": "^1.6",
@@ -26,7 +30,8 @@
         "roave/security-advisories": "dev-master",
         "symfony/console": "^4.2",
         "symfony/var-dumper": "^4.2",
-        "symplify/easy-coding-standard": "^6.0"
+        "symplify/easy-coding-standard": "^6.0",
+        "vimeo/psalm": "^3.4"
     },
     "config": {
         "process-timeout": 0,
