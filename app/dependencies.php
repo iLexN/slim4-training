@@ -37,6 +37,9 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Contracts\Cache\CacheInterface as SymfonyCache;
+use Symfony\Contracts\Cache\ItemInterface;
+use TheCodingMachine\GraphQLite\Schema;
+use TheCodingMachine\GraphQLite\SchemaFactory;
 use Yiisoft\EventDispatcher\Dispatcher;
 use Yiisoft\EventDispatcher\Provider\Provider;
 
@@ -122,7 +125,8 @@ return [
         DI\autowire(Provider::class)
             ->method('attach', DI\autowire(ControllerEventListener1::class))
             ->method('attach', DI\autowire(ControllerEventListener::class))
-            ->method('attach', DI\autowire(ArticleDescriptionToSummaryListener::class))
+            ->method('attach',
+                DI\autowire(ArticleDescriptionToSummaryListener::class))
             ->method('attach', DI\autowire(ArticleGenerateUrlListener::class))
     ,
 
@@ -170,7 +174,7 @@ return [
     CacheItemPoolInterface::class => static function (
         ContainerInterface $container
     ) {
-        return $container->get('psr6Redis');
+        return $container->get('psr6File');
     },
 
 
@@ -219,4 +223,45 @@ return [
     ) {
         return $entityManager->getRepository(\App\Doctrine\User::class);
     },
+
+    SchemaFactory::class => static function (
+        ContainerInterface $container,
+        CacheInterface $cache
+    ) {
+        $factory = new SchemaFactory($cache, $container);
+        $factory->addControllerNamespace('Domain\\GraphQlQuery')
+            ->addTypeNamespace('Domain\\');
+        return $factory;
+    },
+//    Schema::class => static function (
+//        ContainerInterface $container,
+//        CacheInterface $cache,
+//        SymfonyCache $sfcache
+//    ) {
+//
+//        $schema = $sfcache->get('graphql_schema',
+//            function (ItemInterface $item) use ($container, $cache) {
+//                dump('no schema cache');
+//                //$item->expiresAfter(3600);
+//                $factory = new SchemaFactory($cache, $container);
+//                $factory->addControllerNamespace('Domain\\GraphQlQuery')
+//                    ->addTypeNamespace('Domain\\');
+//
+//                $schema = $factory->createSchema();
+//                return $schema;
+//            });
+//
+//        $schema = $cache->get('g2');
+//        if ($schema === null) {
+//            dump('no schema cache for 16');
+//            $factory = new SchemaFactory($cache, $container);
+//            $factory->addControllerNamespace('Domain\\GraphQlQuery')
+//                ->addTypeNamespace('Domain\\');
+//
+//            $schema = $factory->createSchema();
+//            $cache->set('g2', $schema, 10000);
+//        }
+//        return $schema;
+//    },
+
 ];

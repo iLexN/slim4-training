@@ -15,4 +15,6 @@ $container = $containerBuilder->build();
 
 $entityManager = $container->get(\Doctrine\ORM\EntityManagerInterface::class);
 
+//a
+
 return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($entityManager);

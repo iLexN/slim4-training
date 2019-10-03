@@ -77,7 +77,7 @@ final class Name
         $this->eventDispatcher->dispatch($event);
         /** @var string[] $args */
         $args = $event->getArgs();
-        dump($args);
+        //dump($args);
 
         $this->cachePsr16();
 
@@ -114,7 +114,7 @@ final class Name
             $person = new Person('ilex', 'ilex.job');
             $this->cache->set('person.ilex', $person);
         }
-        dump($person);
+        //dump($person);
     }
 
     private function cachePsr6(): void
@@ -129,6 +129,6 @@ final class Name
     private function cacheSF(): void
     {
         $p33 = $this->sfCache->get('person3', [$this, 'cacheCallback']);
-        dump($p33);
+        //dump($p33);
     }
 }

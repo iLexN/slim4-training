@@ -3,19 +3,23 @@
     "description": "use slim4 as training",
     "require": {
         "php": ">=7.3",
+        "ext-json": "*",
         "doctrine/orm": "^2.6",
         "http-interop/http-factory-discovery": "^1.5",
-        "illuminate/database": "^5.8",
+        "illuminate/database": "^6",
         "league/tactician": "^1.0",
         "league/tactician-container": "^2.0",
         "monolog/monolog": "^1.24",
+        "myclabs/php-enum": "^1.7",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^0.3.0",
         "php-di/php-di": "^6.0",
         "robmorgan/phinx": "^0.10.7",
-        "slim/slim": "4.x-dev",
+        "slim/slim": "4.2",
+        "spatie/laravel-queueable-action": "^2.3",
         "symfony/cache": "^4.2",
         "symfony/stopwatch": "^4.2",
+        "thecodingmachine/graphqlite": "^3.0",
         "yiisoft/event-dispatcher": "3.0.x-dev"
     },
     "require-dev": {
@@ -41,6 +45,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
+            "Domain\\": "domain/",
             "Ilex\\Slim\\RouteStrategies\\": "packages/slim-route-strategies/src/"
         }
     },

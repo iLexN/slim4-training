@@ -11,13 +11,13 @@ return [
         'level' => Logger::DEBUG,
     ],
     'cache.file.settings' => [
-        'namespace' => 'app',
-        'lifetime' => 5,
+        'namespace' => 'app1',
+        'lifetime' => 500,
         'path' => __DIR__ . '/../var/cache',
     ],
     'cache.redis.settings' => [
-        'dns' => 'redis://localhost',
-        'namespace' => 'app',
-        'lifetime' => 5,
+        'dns' => 'redis://127.0.0.1',
+        'namespace' => 'app1',
+        'lifetime' => 3600
     ],
 ];
