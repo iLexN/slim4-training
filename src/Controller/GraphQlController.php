@@ -37,7 +37,7 @@ final class GraphQlController
         $payload = \json_decode($body, true);
 
         $query = $payload['query'];
-        $variableValues = $payload['query'];
+        $variableValues = $payload['variable'] ?? null;
 
         $schema = $this->factory->createSchema();
 
